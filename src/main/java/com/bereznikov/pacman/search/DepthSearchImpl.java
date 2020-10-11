@@ -1,11 +1,14 @@
 package com.bereznikov.pacman.search;
 
 import com.bereznikov.pacman.Board;
+import com.bereznikov.pacman.console.ConsoleHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DepthSearchImpl implements DepthSearch {
+    private int sumOfSteps;
     private int PARENT_DOWN = 1;
     private int PARENT_RIGHT = 2;
     private int PARENT_UP = 3;
@@ -19,19 +22,33 @@ public class DepthSearchImpl implements DepthSearch {
     }
 
     @Override
-    public void findAlgo() {
+    public List<String> findAlgo() {
         short[] screenData = board.getScreenData();
         int pacmanPos = getPacmanIdInScreenData();
 
         moves = new ArrayList<>();
-
         theTree = new MazeSearchTree(pacmanPos);
+
+
+        long startTime = System.nanoTime();
+
         makeTree(theTree);
-        System.out.println(theTree);
-        System.out.println(findTrueInTree(theTree));
+        findTrueInTree(theTree);
+
+        long endTime = System.nanoTime();
+
+        ConsoleHelper.print("Time: "+(endTime - startTime) + " ns");
+        ConsoleHelper.print("Steps: " + sumOfSteps);
+        ConsoleHelper.print("Memory: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024 + "MB");
+        ConsoleHelper.print(moves.toString());
+
+        return moves;
     }
 
+
+
     private int findTrueInTree(MazeSearchTree theTree) {
+        sumOfSteps++;
         int res = theTree.getPos();
         if (theTree.isFound()) {
             return res;
@@ -40,6 +57,7 @@ public class DepthSearchImpl implements DepthSearch {
         if (theTree.getDown() != null) {
             int resFromRecur = findTrueInTree(theTree.getDown());
             if (resFromRecur != -1) {
+                moves.add("down");
                 return resFromRecur;
             }
         }
@@ -47,6 +65,7 @@ public class DepthSearchImpl implements DepthSearch {
         if (theTree.getRight() != null) {
             int resFromRecur = findTrueInTree(theTree.getRight());
             if (resFromRecur != -1) {
+                moves.add("right");
                 return resFromRecur;
             }
         }
@@ -54,6 +73,7 @@ public class DepthSearchImpl implements DepthSearch {
         if (theTree.getUp() != null) {
             int resFromRecur = findTrueInTree(theTree.getUp());
             if (resFromRecur != -1) {
+                moves.add("up");
                 return resFromRecur;
             }
 
@@ -62,6 +82,7 @@ public class DepthSearchImpl implements DepthSearch {
         if (theTree.getLeft() != null) {
             int resFromRecur = findTrueInTree(theTree.getLeft());
             if (resFromRecur != -1) {
+                moves.add("left");
                 return resFromRecur;
             }
         }
@@ -70,7 +91,7 @@ public class DepthSearchImpl implements DepthSearch {
 
     @Override
     public MazeSearchTree makeTree(MazeSearchTree theTree) {
-        System.out.println(theTree);
+
         if ((board.getScreenData()[theTree.getPos() - 1] & 16) != 0) {
             theTree.setFound(true);
             theTree.setWayOut(true);

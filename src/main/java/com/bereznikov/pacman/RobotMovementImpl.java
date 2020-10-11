@@ -4,6 +4,9 @@ import com.bereznikov.pacman.search.DepthSearch;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class RobotMovementImpl implements RobotMovement {
     private Board theBoard;
@@ -22,7 +25,23 @@ public class RobotMovementImpl implements RobotMovement {
     public void start() {
         startGame();
         depthSearch.setBoard(theBoard);
-        depthSearch.findAlgo();
+        List<String> moves = depthSearch.findAlgo();
+        Collections.reverse(moves);
+        goToPoint(moves);
+    }
+
+    private void goToPoint(List<String> moves) {
+        for (String move:moves) {
+            if(move.equals("down")) {
+                moveDown();
+            } else if (move.equals("right")) {
+                moveRight();
+            } else if (move.equals("up")) {
+                moveUp();
+            } else if (move.equals("left")) {
+                moveLeft();
+            }
+        }
     }
 
     private void startGame() {
