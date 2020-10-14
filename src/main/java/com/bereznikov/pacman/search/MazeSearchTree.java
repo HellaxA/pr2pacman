@@ -1,5 +1,8 @@
 package com.bereznikov.pacman.search;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MazeSearchTree {
     private int pos;
     private MazeSearchTree down;
@@ -7,10 +10,19 @@ public class MazeSearchTree {
     private MazeSearchTree up;
     private MazeSearchTree left;
     private boolean found;
-    private int parent;
     private boolean wayOut;
 
+
+    public boolean isWayOut() {
+        return wayOut;
+    }
+
+    public void setWayOut(boolean wayOut) {
+        this.wayOut = wayOut;
+    }
+
     public MazeSearchTree() {
+
     }
 
     public MazeSearchTree(int pos) {
@@ -80,31 +92,10 @@ public class MazeSearchTree {
         this.left = left;
     }
 
-    public int getParent() {
-        return parent;
-    }
-
-    public void setParent(int parent) {
-        this.parent = parent;
-    }
-
-    public boolean isWayOut() {
-        return wayOut;
-    }
-
-    public void setWayOut(boolean wayOut) {
-        this.wayOut = wayOut;
-    }
-
     @Override
     public String toString() {
         return "MazeSearchTree{" +
                 "pos=" + pos +
-                ", down=" + down +
-                ", right=" + right +
-                ", up=" + up +
-                ", left=" + left +
-                ", found=" + found +
                 '}';
     }
 }

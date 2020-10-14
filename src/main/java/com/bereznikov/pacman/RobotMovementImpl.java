@@ -26,13 +26,13 @@ public class RobotMovementImpl implements RobotMovement {
         startGame();
         depthSearch.setBoard(theBoard);
         List<String> moves = depthSearch.findAlgo();
-        Collections.reverse(moves);
+
         goToPoint(moves);
     }
 
     private void goToPoint(List<String> moves) {
         for (String move:moves) {
-            if(move.equals("down")) {
+            if (move.equals("down")) {
                 moveDown();
             } else if (move.equals("right")) {
                 moveRight();
@@ -92,12 +92,12 @@ public class RobotMovementImpl implements RobotMovement {
 
     private void move(int button) {
         robot.keyPress(button);
-        robot.delay(1000);
+        robot.delay(970);
     }
 
     private void move(int button, int times) {
         robot.keyPress(button);
-        robot.delay(1000 * times);
+        robot.delay(970 * times);
     }
 
     public Board getTheBoard() {
